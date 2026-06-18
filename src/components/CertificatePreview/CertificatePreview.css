@@ -24,7 +24,7 @@
   flex-direction: column;
   align-items: center;
   height: 100%;
-  padding: 40px 72px 80px;
+  padding: 50px 72px 80px;
 }
 
 /* ---- Header ---- */
@@ -75,6 +75,7 @@
   height: 130px;
   object-fit: contain;
   flex-shrink: 0;
+  opacity: 0;
 }
 
 /* ---- Divider ---- */
