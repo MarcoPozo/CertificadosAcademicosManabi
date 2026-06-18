@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Montserrat:wght@400;600;700&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --color-primary: #1a6b2f;
+  --color-primary-dark: #0f4a1f;
+  --color-primary-light: #2d8c45;
+  --color-gold: #c9a84c;
+  --color-white: #ffffff;
+  --color-bg: #f4f6f4;
+  --color-text: #1a1a1a;
+  --color-text-muted: #555555;
+  --color-border: #d0d0d0;
+
+  --font-body: 'Cormorant Garamond', serif;
+  --font-name: 'Playfair Display', serif;
+  --font-ui: 'Montserrat', sans-serif;
+
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.10);
+  --radius-card: 12px;
+}
+
+html,
+body {
+  height: 100%;
+  font-family: var(--font-ui);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+#root {
+  height: 100%;
+}

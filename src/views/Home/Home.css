@@ -1,0 +1,31 @@
+.home {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.home__preview-area {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-bg);
+  padding: 16px;
+  overflow: hidden;
+}
+
+.home__preview-scaler {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* El certificado real es 960x680 — escalamos para que quepa
+   en el espacio disponible sin deformarse */
+.home__preview-scaler > * {
+  transform-origin: center center;
+  /* aspect-ratio 960/680 = 1.412 — scale down to fit */
+  scale: 0.82;
+}

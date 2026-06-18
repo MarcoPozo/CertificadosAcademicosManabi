@@ -1,0 +1,108 @@
+.certificate-form {
+  display: flex;
+  flex-direction: column;
+  width: 340px;
+  min-width: 300px;
+  height: 100%;
+  background-color: var(--color-white);
+  border-right: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.certificate-form__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.certificate-form__title {
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+}
+
+.certificate-form__reset-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 1.5px solid var(--color-border);
+  border-radius: 6px;
+  padding: 6px;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.certificate-form__reset-btn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.certificate-form__body {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.certificate-form__section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.certificate-form__section-title {
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.certificate-form__row {
+  display: flex;
+  gap: 10px;
+}
+
+.certificate-form__row .form-field {
+  flex: 1;
+  min-width: 0;
+}
+
+.certificate-form__footer {
+  padding: 16px 20px;
+  border-top: 1px solid var(--color-border);
+}
+
+.certificate-form__download-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.certificate-form__download-btn:hover {
+  background-color: var(--color-primary-dark);
+}

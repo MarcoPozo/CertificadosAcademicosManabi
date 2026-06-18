@@ -1,0 +1,222 @@
+.certificate-preview {
+  position: relative;
+  width: 960px;
+  height: 680px;
+  background-color: var(--color-white);
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.18);
+  flex-shrink: 0;
+}
+
+.certificate-preview__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+}
+
+.certificate-preview__content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  padding: 40px 72px 80px;
+}
+
+/* ---- Header ---- */
+.certificate-preview__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.certificate-preview__logo {
+  width: 130px;
+  height: 130px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.certificate-preview__school-info {
+  text-align: center;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.certificate-preview__school-sub {
+  font-family: var(--font-ui);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.certificate-preview__school-name {
+  font-family: var(--font-ui);
+  font-size: 3rem;
+  font-weight: 900;
+  color: var(--color-primary-dark);
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+.certificate-preview__year-badge {
+  width: 115px;
+  height: 130px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+/* ---- Divider ---- */
+.certificate-preview__divider {
+  width: 80%;
+  height: 2px;
+  background: linear-gradient(to right, transparent, var(--color-primary), transparent);
+  margin: 5px auto 0;
+}
+
+/* ---- Title ---- */
+.certificate-preview__title {
+  font-family: var(--font-body);
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0;
+}
+
+/* ---- Student name ---- */
+.certificate-preview__name-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  margin-bottom: 30px;
+}
+
+.certificate-preview__to {
+  font-family: var(--font-name);
+  font-size: 1.7rem;
+  font-style: italic;
+  color: var(--color-primary-dark);
+  align-self: flex-start;
+  margin-left: 6px;
+  line-height: 1;
+}
+
+.certificate-preview__student-name {
+  font-family: var(--font-name);
+  font-size: 2.8rem;
+  font-weight: 700;
+  font-style: italic;
+  color: var(--color-primary-dark);
+  text-align: center;
+  line-height: 1.25;
+}
+
+.certificate-preview__name-line {
+  width: 100%;
+  height: 1.5px;
+  background-color: var(--color-primary-dark);
+  margin-top: 4px;
+}
+
+/* ---- Body text ---- */
+.certificate-preview__body-text {
+  font-family: var(--font-body);
+  font-size: 1.3rem;
+  color: var(--color-text);
+  text-align: center;
+  line-height: 1.5;
+  max-width: 86%;
+  font-style: italic;
+  margin-bottom: 30px;
+}
+
+.certificate-preview__body-text strong {
+  font-style: normal;
+  color: var(--color-primary-dark);
+}
+
+/* ---- Info row: scores + date ---- */
+.certificate-preview__info-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  width: 84%;
+  margin-bottom: auto;
+}
+
+.certificate-preview__scores {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.certificate-preview__score-item {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.certificate-preview__score-item strong {
+  color: var(--color-primary-dark);
+}
+
+.certificate-preview__date {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  color: var(--color-text);
+  font-style: italic;
+}
+
+/* ---- Signatures ---- */
+.certificate-preview__signatures {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 24px;
+}
+
+.certificate-preview__signature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.certificate-preview__signature-line {
+  width: 148px;
+  height: 1.5px;
+  background-color: var(--color-primary-dark);
+}
+
+.certificate-preview__signature-name {
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.certificate-preview__signature-role {
+  font-family: var(--font-ui);
+  font-size: 0.66rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
