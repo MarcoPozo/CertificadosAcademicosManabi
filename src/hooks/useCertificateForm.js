@@ -6,7 +6,7 @@ const initialState = {
   grade: '',
   parallel: '',
   aprovechamiento: '',
-  conducta: 'A',
+  conducta: 'S',
   schoolYear: '2025 - 2026',
   city: 'Pifo',
   day: '',

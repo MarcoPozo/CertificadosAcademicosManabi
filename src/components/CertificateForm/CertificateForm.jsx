@@ -9,9 +9,10 @@ const PLACE_OPTIONS = [
 ]
 
 const CONDUCTA_OPTIONS = [
-  { value: 'A', label: 'A' },
-  { value: 'B', label: 'B' },
   { value: 'S', label: 'S' },
+  { value: 'F', label: 'F' },
+  { value: 'O', label: 'O' },
+  { value: 'N', label: 'N' },
 ]
 
 function CertificateForm({ formData, onChange, onReset, onDownload }) {
