@@ -32,7 +32,7 @@ function CertificateForm({ formData, onChange, onReset, onDownload }) {
             id="studentName"
             value={formData.studentName}
             onChange={(v) => onChange('studentName', v)}
-            placeholder="Apellido Apellido Nombre Nombre"
+            placeholder="Apellidos y Nombres"
           />
           <div className="certificate-form__row">
             <FormField
