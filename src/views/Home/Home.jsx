@@ -1,20 +1,40 @@
 import { useCallback, useRef, useState } from 'react'
 import CertificateForm from '../../components/CertificateForm/CertificateForm'
 import CertificatePreview from '../../components/CertificatePreview/CertificatePreview'
+import ConfirmModal from '../../components/ConfirmModal/ConfirmModal'
 import Toast from '../../components/Toast/Toast'
 import { useCertificateForm } from '../../hooks/useCertificateForm'
 import { generatePdf } from '../../utils/generatePdf'
 import './Home.css'
 
 function Home() {
-  const { formData, handleChange, reset } = useCertificateForm()
+  const { formData, handleChange, resetWithType, hasUserData, reset } = useCertificateForm()
   const previewRef = useRef(null)
   const [toast, setToast] = useState(false)
+  const [pendingType, setPendingType] = useState(null)
 
   const handleFieldChange = useCallback((field, value) => {
-    const didReset = handleChange(field, value)
-    if (didReset) setToast(true)
-  }, [handleChange])
+    if (field === 'certificateType' && value !== formData.certificateType) {
+      if (hasUserData()) {
+        setPendingType(value)
+        return
+      }
+      resetWithType(value)
+      setToast(true)
+      return
+    }
+    handleChange(field, value)
+  }, [formData.certificateType, handleChange, hasUserData, resetWithType])
+
+  const handleConfirm = useCallback(() => {
+    resetWithType(pendingType)
+    setPendingType(null)
+    setToast(true)
+  }, [pendingType, resetWithType])
+
+  const handleCancel = useCallback(() => {
+    setPendingType(null)
+  }, [])
 
   const handleDownload = () => {
     generatePdf(previewRef, formData.studentName)
@@ -33,8 +53,13 @@ function Home() {
           <CertificatePreview ref={previewRef} formData={formData} />
         </div>
       </section>
+      <ConfirmModal
+        visible={pendingType !== null}
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+      />
       <Toast
-        message="Usted ha cambiado el tipo de certificado"
+        message="Se cambió el tipo de certificado"
         visible={toast}
         onClose={() => setToast(false)}
       />

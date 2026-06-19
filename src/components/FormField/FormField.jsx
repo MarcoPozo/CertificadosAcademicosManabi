@@ -1,9 +1,10 @@
 import './FormField.css'
 
-function FormField({ label, id, type = 'text', value, onChange, options, placeholder }) {
+function FormField({ label, id, type = 'text', value, onChange, options, placeholder, icon: Icon }) {
   return (
     <div className="form-field">
       <label className="form-field__label" htmlFor={id}>
+        {Icon && <Icon className="form-field__icon" size={14} />}
         {label}
       </label>
       {type === 'select' ? (

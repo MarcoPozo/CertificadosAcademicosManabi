@@ -1,4 +1,4 @@
-import { FiRefreshCw, FiDownload } from 'react-icons/fi'
+import { FiRefreshCw, FiDownload, FiFileText, FiUser, FiAward, FiSmile, FiBookOpen, FiColumns, FiStar, FiCalendar, FiEdit3 } from 'react-icons/fi'
 import FormField from '../FormField/FormField'
 import './CertificateForm.css'
 
@@ -40,6 +40,7 @@ function CertificateForm({ formData, onChange, onReset, onDownload }) {
             value={formData.certificateType}
             onChange={(v) => onChange('certificateType', v)}
             options={TYPE_OPTIONS}
+            icon={FiFileText}
           />
           <FormField
             label="Nombre completo"
@@ -47,6 +48,7 @@ function CertificateForm({ formData, onChange, onReset, onDownload }) {
             value={formData.studentName}
             onChange={(v) => onChange('studentName', v)}
             placeholder="Apellidos y Nombres"
+            icon={FiUser}
           />
           <div className="certificate-form__row">
             <FormField
@@ -56,6 +58,7 @@ function CertificateForm({ formData, onChange, onReset, onDownload }) {
               value={formData.place}
               onChange={(v) => onChange('place', v)}
               options={PLACE_OPTIONS}
+              icon={FiAward}
             />
             {formData.certificateType === 'elemental' ? (
               <FormField
@@ -65,6 +68,7 @@ function CertificateForm({ formData, onChange, onReset, onDownload }) {
                 value={formData.conducta}
                 onChange={(v) => onChange('conducta', v)}
                 options={CONDUCTA_OPTIONS}
+                icon={FiSmile}
               />
             ) : (
               <FormField
@@ -73,6 +77,7 @@ function CertificateForm({ formData, onChange, onReset, onDownload }) {
                 value={formData.conducta}
                 onChange={(v) => onChange('conducta', v)}
                 placeholder="Ej: EP"
+                icon={FiSmile}
               />
             )}
           </div>
@@ -83,6 +88,7 @@ function CertificateForm({ formData, onChange, onReset, onDownload }) {
               value={formData.grade}
               onChange={(v) => onChange('grade', v)}
               placeholder={formData.certificateType === 'elemental' ? 'Ej: Tercer' : 'Ej: Inicial 1'}
+              icon={FiBookOpen}
             />
             <FormField
               label="Paralelo"
@@ -90,6 +96,7 @@ function CertificateForm({ formData, onChange, onReset, onDownload }) {
               value={formData.parallel}
               onChange={(v) => onChange('parallel', v)}
               placeholder='Ej: "B"'
+              icon={FiColumns}
             />
           </div>
           <FormField
@@ -98,6 +105,7 @@ function CertificateForm({ formData, onChange, onReset, onDownload }) {
             value={formData.aprovechamiento}
             onChange={(v) => onChange('aprovechamiento', v)}
             placeholder="Ej: 9,84 A+"
+            icon={FiStar}
           />
           <FormField
             label="Año lectivo"
@@ -105,6 +113,7 @@ function CertificateForm({ formData, onChange, onReset, onDownload }) {
             value={formData.schoolYear}
             onChange={(v) => onChange('schoolYear', v)}
             placeholder="2025 - 2026"
+            icon={FiCalendar}
           />
         </section>
 
@@ -116,6 +125,7 @@ function CertificateForm({ formData, onChange, onReset, onDownload }) {
             value={formData.directoraName}
             onChange={(v) => onChange('directoraName', v)}
             placeholder="MSC. NOMBRE APELLIDO"
+            icon={FiEdit3}
           />
           <FormField
             label="Subdirectora"
@@ -123,6 +133,7 @@ function CertificateForm({ formData, onChange, onReset, onDownload }) {
             value={formData.subdirectoraName}
             onChange={(v) => onChange('subdirectoraName', v)}
             placeholder="MSC. NOMBRE APELLIDO"
+            icon={FiEdit3}
           />
           <FormField
             label="Docente"
@@ -130,6 +141,7 @@ function CertificateForm({ formData, onChange, onReset, onDownload }) {
             value={formData.docenteName}
             onChange={(v) => onChange('docenteName', v)}
             placeholder="PROF. NOMBRE APELLIDO"
+            icon={FiEdit3}
           />
         </section>
       </div>

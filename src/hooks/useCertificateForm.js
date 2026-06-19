@@ -22,19 +22,26 @@ export function useCertificateForm() {
   const [formData, setFormData] = useState(initialState)
 
   const handleChange = (field, value) => {
-    if (field === 'certificateType' && value !== formData.certificateType) {
-      setFormData({
-        ...initialState,
-        certificateType: value,
-        conducta: value === 'elemental' ? 'S' : '',
-      })
-      return true
-    }
     setFormData((prev) => ({ ...prev, [field]: value }))
-    return false
+  }
+
+  const resetWithType = (type) => {
+    setFormData({
+      ...initialState,
+      certificateType: type,
+      conducta: type === 'elemental' ? 'S' : '',
+    })
+  }
+
+  const hasUserData = () => {
+    return formData.studentName !== '' ||
+      formData.grade !== '' ||
+      formData.parallel !== '' ||
+      formData.aprovechamiento !== '' ||
+      formData.docenteName !== ''
   }
 
   const reset = () => setFormData(initialState)
 
-  return { formData, handleChange, reset }
+  return { formData, handleChange, resetWithType, hasUserData, reset }
 }
