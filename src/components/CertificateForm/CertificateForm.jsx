@@ -1,5 +1,6 @@
-import { FiRefreshCw, FiDownload, FiFileText, FiUser, FiSmile, FiBookOpen, FiColumns, FiStar, FiCalendar, FiEdit3, FiPlus, FiX } from 'react-icons/fi'
+import { FiRefreshCw, FiDownload, FiFileText, FiUser, FiSmile, FiBookOpen, FiColumns, FiStar, FiCalendar, FiEdit3, FiPlus, FiX, FiAward, FiUsers } from 'react-icons/fi'
 import FormField from '../FormField/FormField'
+import { getAvailablePlaces } from '../../hooks/useCertificateForm'
 import './CertificateForm.css'
 
 const TYPE_OPTIONS = [
@@ -14,6 +15,12 @@ const CONDUCTA_OPTIONS = [
   { value: 'N', label: 'N' },
 ]
 
+const ALL_PLACE_OPTIONS = [
+  { value: 'Primer', label: '1er Lugar' },
+  { value: 'Segundo', label: '2do Lugar' },
+  { value: 'Tercer', label: '3er Lugar' },
+]
+
 const PLACE_LABELS = { Primer: '1°', Segundo: '2°', Tercer: '3°' }
 
 function CertificateForm({
@@ -23,10 +30,11 @@ function CertificateForm({
   onAddStudent,
   onRemoveStudent,
   onSetActiveStudent,
+  onToggleMulti,
   onReset,
   onDownload,
 }) {
-  const { students, activeStudent } = formData
+  const { students, activeStudent, multiMode } = formData
   const student = students[activeStudent]
 
   return (
@@ -79,35 +87,63 @@ function CertificateForm({
         </section>
 
         <section className="certificate-form__section">
-          <h3 className="certificate-form__section-title">Estudiantes</h3>
-          <div className="certificate-form__tabs">
-            {students.map((s, i) => (
-              <button
-                key={i}
-                className={`certificate-form__tab ${i === activeStudent ? 'certificate-form__tab--active' : ''}`}
-                onClick={() => onSetActiveStudent(i)}
-                title={s.studentName || `Estudiante ${i + 1}`}
-              >
-                <span className="certificate-form__tab-place">{PLACE_LABELS[s.place]}</span>
-                <span className="certificate-form__tab-name">
-                  {s.studentName ? s.studentName.split(' ')[0] : `Est. ${i + 1}`}
-                </span>
-                {students.length > 1 && (
-                  <FiX
-                    className="certificate-form__tab-remove"
-                    size={13}
-                    onClick={(e) => { e.stopPropagation(); onRemoveStudent(i) }}
-                  />
-                )}
-              </button>
-            ))}
-            {students.length < 3 && (
-              <button className="certificate-form__tab certificate-form__tab--add" onClick={onAddStudent} title="Agregar estudiante">
-                <FiPlus size={14} />
-              </button>
-            )}
+          <div className="certificate-form__section-header">
+            <h3 className="certificate-form__section-title">Estudiante{multiMode ? 's' : ''}</h3>
+            <button
+              className={`certificate-form__multi-toggle ${multiMode ? 'certificate-form__multi-toggle--active' : ''}`}
+              onClick={onToggleMulti}
+              title={multiMode ? 'Modo individual' : 'Generar múltiples certificados'}
+            >
+              <FiUsers size={14} />
+              <span>{multiMode ? 'Múltiple' : 'Individual'}</span>
+            </button>
           </div>
 
+          {multiMode && (
+            <div className="certificate-form__tabs">
+              {students.map((s, i) => (
+                <button
+                  key={i}
+                  className={`certificate-form__tab ${i === activeStudent ? 'certificate-form__tab--active' : ''}`}
+                  onClick={() => onSetActiveStudent(i)}
+                  title={s.studentName || `Estudiante ${i + 1}`}
+                >
+                  <span className="certificate-form__tab-place">{PLACE_LABELS[s.place]}</span>
+                  <span className="certificate-form__tab-name">
+                    {s.studentName ? s.studentName.split(' ')[0] : `Est. ${i + 1}`}
+                  </span>
+                  {students.length > 1 && (
+                    <FiX
+                      className="certificate-form__tab-remove"
+                      size={13}
+                      onClick={(e) => { e.stopPropagation(); onRemoveStudent(i) }}
+                    />
+                  )}
+                </button>
+              ))}
+              {students.length < 3 && (
+                <button className="certificate-form__tab certificate-form__tab--add" onClick={onAddStudent} title="Agregar estudiante">
+                  <FiPlus size={14} />
+                </button>
+              )}
+            </div>
+          )}
+
+          <FormField
+            label="Puesto"
+            id={`place-${activeStudent}`}
+            type="select"
+            value={student.place}
+            onChange={(v) => onStudentChange(activeStudent, 'place', v)}
+            options={multiMode
+              ? ALL_PLACE_OPTIONS.filter((opt) =>
+                  getAvailablePlaces(students, activeStudent).includes(opt.value) ||
+                  opt.value === student.place
+                )
+              : ALL_PLACE_OPTIONS
+            }
+            icon={FiAward}
+          />
           <FormField
             label="Nombre completo"
             id={`studentName-${activeStudent}`}
@@ -180,7 +216,7 @@ function CertificateForm({
       <div className="certificate-form__footer">
         <button className="certificate-form__download-btn" onClick={onDownload}>
           <FiDownload size={18} />
-          Descargar PDF {students.length > 1 ? `(${students.length})` : ''}
+          Descargar PDF {multiMode && students.length > 1 ? `(${students.length})` : ''}
         </button>
       </div>
     </aside>

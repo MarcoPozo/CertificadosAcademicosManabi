@@ -26,8 +26,15 @@
   pointer-events: auto;
 }
 
-.toast__icon {
+.toast--warning .toast__icon {
   color: #f5a623;
+}
+
+.toast--success .toast__icon {
+  color: #4caf50;
+}
+
+.toast__icon {
   flex-shrink: 0;
 }
 

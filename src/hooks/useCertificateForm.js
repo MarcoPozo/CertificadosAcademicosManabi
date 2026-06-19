@@ -1,12 +1,12 @@
 import { useState } from 'react'
 
-const PLACES = ['Primer', 'Segundo', 'Tercer']
+const ALL_PLACES = ['Primer', 'Segundo', 'Tercer']
 
-const createStudent = (index) => ({
+const createStudent = (place, conducta = 'S') => ({
   studentName: '',
-  place: PLACES[index],
+  place,
   aprovechamiento: '',
-  conducta: 'S',
+  conducta,
 })
 
 const initialState = {
@@ -17,8 +17,9 @@ const initialState = {
   directoraName: 'MSC. SUSANA CANENCIA',
   subdirectoraName: 'MSC. YOLANDA ALQUINGA',
   docenteName: '',
-  students: [createStudent(0)],
+  students: [createStudent('Primer')],
   activeStudent: 0,
+  multiMode: false,
 }
 
 export function getMergedFormData(formData, studentIndex) {
@@ -36,6 +37,13 @@ export function getMergedFormData(formData, studentIndex) {
     subdirectoraName: formData.subdirectoraName,
     docenteName: formData.docenteName,
   }
+}
+
+export function getAvailablePlaces(students, currentIndex) {
+  const usedPlaces = students
+    .filter((_, i) => i !== currentIndex)
+    .map((s) => s.place)
+  return ALL_PLACES.filter((p) => !usedPlaces.includes(p))
 }
 
 export function useCertificateForm() {
@@ -57,13 +65,12 @@ export function useCertificateForm() {
   const addStudent = () => {
     setFormData((prev) => {
       if (prev.students.length >= 3) return prev
-      const newStudent = createStudent(prev.students.length)
-      if (prev.certificateType !== 'elemental') {
-        newStudent.conducta = ''
-      }
+      const usedPlaces = prev.students.map((s) => s.place)
+      const nextPlace = ALL_PLACES.find((p) => !usedPlaces.includes(p)) || 'Primer'
+      const conducta = prev.certificateType === 'elemental' ? 'S' : ''
       return {
         ...prev,
-        students: [...prev.students, newStudent],
+        students: [...prev.students, createStudent(nextPlace, conducta)],
         activeStudent: prev.students.length,
       }
     })
@@ -72,9 +79,7 @@ export function useCertificateForm() {
   const removeStudent = (index) => {
     setFormData((prev) => {
       if (prev.students.length <= 1) return prev
-      const students = prev.students
-        .filter((_, i) => i !== index)
-        .map((s, i) => ({ ...s, place: PLACES[i] }))
+      const students = prev.students.filter((_, i) => i !== index)
       const active = prev.activeStudent >= students.length
         ? students.length - 1
         : prev.activeStudent > index
@@ -89,12 +94,11 @@ export function useCertificateForm() {
   }
 
   const resetWithType = (type) => {
-    const student = createStudent(0)
-    if (type !== 'elemental') student.conducta = ''
+    const conducta = type === 'elemental' ? 'S' : ''
     setFormData({
       ...initialState,
       certificateType: type,
-      students: [student],
+      students: [createStudent('Primer', conducta)],
       activeStudent: 0,
     })
   }
@@ -106,6 +110,20 @@ export function useCertificateForm() {
       formData.docenteName !== ''
   }
 
+  const toggleMultiMode = () => {
+    setFormData((prev) => {
+      if (prev.multiMode) {
+        return {
+          ...prev,
+          multiMode: false,
+          students: [prev.students[prev.activeStudent]],
+          activeStudent: 0,
+        }
+      }
+      return { ...prev, multiMode: true }
+    })
+  }
+
   const reset = () => setFormData(initialState)
 
   return {
@@ -115,6 +133,7 @@ export function useCertificateForm() {
     addStudent,
     removeStudent,
     setActiveStudent,
+    toggleMultiMode,
     resetWithType,
     hasUserData,
     reset,

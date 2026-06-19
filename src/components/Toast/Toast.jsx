@@ -1,17 +1,24 @@
 import { useEffect } from 'react'
-import { FiAlertTriangle } from 'react-icons/fi'
+import { FiAlertTriangle, FiCheckCircle } from 'react-icons/fi'
 import './Toast.css'
 
-function Toast({ message, visible, onClose }) {
+const ICONS = {
+  warning: FiAlertTriangle,
+  success: FiCheckCircle,
+}
+
+function Toast({ message, visible, onClose, variant = 'warning' }) {
   useEffect(() => {
     if (!visible) return
     const timer = setTimeout(onClose, 3500)
     return () => clearTimeout(timer)
   }, [visible, onClose])
 
+  const Icon = ICONS[variant] || ICONS.warning
+
   return (
-    <div className={`toast ${visible ? 'toast--visible' : ''}`}>
-      <FiAlertTriangle className="toast__icon" size={20} />
+    <div className={`toast toast--${variant} ${visible ? 'toast--visible' : ''}`}>
+      <Icon className="toast__icon" size={20} />
       <p className="toast__message">{message}</p>
     </div>
   )

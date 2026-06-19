@@ -1,7 +1,9 @@
 import { useCallback, useRef, useState } from 'react'
+import { FiInfo } from 'react-icons/fi'
 import CertificateForm from '../../components/CertificateForm/CertificateForm'
 import CertificatePreview from '../../components/CertificatePreview/CertificatePreview'
 import ConfirmModal from '../../components/ConfirmModal/ConfirmModal'
+import CreditsModal from '../../components/CreditsModal/CreditsModal'
 import Toast from '../../components/Toast/Toast'
 import { useCertificateForm, getMergedFormData } from '../../hooks/useCertificateForm'
 import { captureElement, buildPdf } from '../../utils/generatePdf'
@@ -15,15 +17,21 @@ function Home() {
     addStudent,
     removeStudent,
     setActiveStudent,
+    toggleMultiMode,
     resetWithType,
     hasUserData,
     reset,
   } = useCertificateForm()
 
   const previewRef = useRef(null)
-  const [toast, setToast] = useState(false)
+  const [toastData, setToastData] = useState({ visible: false, message: '', variant: 'warning' })
   const [pendingType, setPendingType] = useState(null)
   const [generating, setGenerating] = useState(false)
+  const [showCredits, setShowCredits] = useState(false)
+
+  const showToast = useCallback((message, variant = 'warning') => {
+    setToastData({ visible: true, message, variant })
+  }, [])
 
   const handleFieldChange = useCallback((field, value) => {
     if (field === 'certificateType' && value !== formData.certificateType) {
@@ -32,17 +40,17 @@ function Home() {
         return
       }
       resetWithType(value)
-      setToast(true)
+      showToast('Se cambió el tipo de certificado')
       return
     }
     handleChange(field, value)
-  }, [formData.certificateType, handleChange, hasUserData, resetWithType])
+  }, [formData.certificateType, handleChange, hasUserData, resetWithType, showToast])
 
   const handleConfirm = useCallback(() => {
     resetWithType(pendingType)
     setPendingType(null)
-    setToast(true)
-  }, [pendingType, resetWithType])
+    showToast('Se cambió el tipo de certificado')
+  }, [pendingType, resetWithType, showToast])
 
   const handleCancel = useCallback(() => {
     setPendingType(null)
@@ -80,9 +88,11 @@ function Home() {
 
     setActiveStudent(originalActive)
     setGenerating(false)
+    showToast('PDF descargado correctamente', 'success')
   }
 
   const mergedData = getMergedFormData(formData, formData.activeStudent)
+  const totalStudents = formData.students.length
 
   return (
     <main className="home">
@@ -93,12 +103,23 @@ function Home() {
         onAddStudent={addStudent}
         onRemoveStudent={removeStudent}
         onSetActiveStudent={setActiveStudent}
+        onToggleMulti={toggleMultiMode}
         onReset={reset}
         onDownload={handleDownload}
       />
       <section className="home__preview-area">
+        <button className="home__credits-btn" onClick={() => setShowCredits(true)} title="Acerca de">
+          <FiInfo size={20} />
+        </button>
+        {totalStudents > 1 && (
+          <div className="home__preview-badge">
+            {formData.activeStudent + 1} / {totalStudents}
+          </div>
+        )}
         <div className="home__preview-scaler">
-          <CertificatePreview ref={previewRef} formData={mergedData} />
+          <div className="home__preview-fade" key={formData.activeStudent}>
+            <CertificatePreview ref={previewRef} formData={mergedData} />
+          </div>
         </div>
         {generating && <div className="home__generating-overlay">Generando PDF...</div>}
       </section>
@@ -107,10 +128,15 @@ function Home() {
         onConfirm={handleConfirm}
         onCancel={handleCancel}
       />
+      <CreditsModal
+        visible={showCredits}
+        onClose={() => setShowCredits(false)}
+      />
       <Toast
-        message="Se cambió el tipo de certificado"
-        visible={toast}
-        onClose={() => setToast(false)}
+        message={toastData.message}
+        visible={toastData.visible}
+        variant={toastData.variant}
+        onClose={() => setToastData((prev) => ({ ...prev, visible: false }))}
       />
     </main>
   )
