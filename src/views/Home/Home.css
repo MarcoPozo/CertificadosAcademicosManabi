@@ -12,6 +12,21 @@
   background-color: var(--color-bg);
   padding: 16px;
   overflow: hidden;
+  position: relative;
+}
+
+.home__generating-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(244, 246, 244, 0.92);
+  font-family: var(--font-ui);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-primary-dark);
+  z-index: 10;
 }
 
 .home__preview-scaler {

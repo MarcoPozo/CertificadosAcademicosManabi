@@ -1,12 +1,6 @@
-import { FiRefreshCw, FiDownload, FiFileText, FiUser, FiAward, FiSmile, FiBookOpen, FiColumns, FiStar, FiCalendar, FiEdit3 } from 'react-icons/fi'
+import { FiRefreshCw, FiDownload, FiFileText, FiUser, FiSmile, FiBookOpen, FiColumns, FiStar, FiCalendar, FiEdit3, FiPlus, FiX } from 'react-icons/fi'
 import FormField from '../FormField/FormField'
 import './CertificateForm.css'
-
-const PLACE_OPTIONS = [
-  { value: 'Primer', label: '1er Lugar' },
-  { value: 'Segundo', label: '2do Lugar' },
-  { value: 'Tercer', label: '3er Lugar' },
-]
 
 const TYPE_OPTIONS = [
   { value: 'elemental', label: 'Elemental y Media' },
@@ -20,7 +14,21 @@ const CONDUCTA_OPTIONS = [
   { value: 'N', label: 'N' },
 ]
 
-function CertificateForm({ formData, onChange, onReset, onDownload }) {
+const PLACE_LABELS = { Primer: '1°', Segundo: '2°', Tercer: '3°' }
+
+function CertificateForm({
+  formData,
+  onChange,
+  onStudentChange,
+  onAddStudent,
+  onRemoveStudent,
+  onSetActiveStudent,
+  onReset,
+  onDownload,
+}) {
+  const { students, activeStudent } = formData
+  const student = students[activeStudent]
+
   return (
     <aside className="certificate-form">
       <div className="certificate-form__header">
@@ -32,7 +40,7 @@ function CertificateForm({ formData, onChange, onReset, onDownload }) {
 
       <div className="certificate-form__body">
         <section className="certificate-form__section">
-          <h3 className="certificate-form__section-title">Estudiante</h3>
+          <h3 className="certificate-form__section-title">General</h3>
           <FormField
             label="Tipo de certificado"
             id="certificateType"
@@ -42,45 +50,6 @@ function CertificateForm({ formData, onChange, onReset, onDownload }) {
             options={TYPE_OPTIONS}
             icon={FiFileText}
           />
-          <FormField
-            label="Nombre completo"
-            id="studentName"
-            value={formData.studentName}
-            onChange={(v) => onChange('studentName', v)}
-            placeholder="Apellidos y Nombres"
-            icon={FiUser}
-          />
-          <div className="certificate-form__row">
-            <FormField
-              label="Lugar obtenido"
-              id="place"
-              type="select"
-              value={formData.place}
-              onChange={(v) => onChange('place', v)}
-              options={PLACE_OPTIONS}
-              icon={FiAward}
-            />
-            {formData.certificateType === 'elemental' ? (
-              <FormField
-                label="Conducta"
-                id="conducta"
-                type="select"
-                value={formData.conducta}
-                onChange={(v) => onChange('conducta', v)}
-                options={CONDUCTA_OPTIONS}
-                icon={FiSmile}
-              />
-            ) : (
-              <FormField
-                label="Conducta"
-                id="conducta"
-                value={formData.conducta}
-                onChange={(v) => onChange('conducta', v)}
-                placeholder="Ej: EP"
-                icon={FiSmile}
-              />
-            )}
-          </div>
           <div className="certificate-form__row">
             <FormField
               label={formData.certificateType === 'elemental' ? 'Grado / Año' : 'Nivel'}
@@ -100,14 +69,6 @@ function CertificateForm({ formData, onChange, onReset, onDownload }) {
             />
           </div>
           <FormField
-            label="Aprovechamiento"
-            id="aprovechamiento"
-            value={formData.aprovechamiento}
-            onChange={(v) => onChange('aprovechamiento', v)}
-            placeholder="Ej: 9,84 A+"
-            icon={FiStar}
-          />
-          <FormField
             label="Año lectivo"
             id="schoolYear"
             value={formData.schoolYear}
@@ -115,6 +76,76 @@ function CertificateForm({ formData, onChange, onReset, onDownload }) {
             placeholder="2025 - 2026"
             icon={FiCalendar}
           />
+        </section>
+
+        <section className="certificate-form__section">
+          <h3 className="certificate-form__section-title">Estudiantes</h3>
+          <div className="certificate-form__tabs">
+            {students.map((s, i) => (
+              <button
+                key={i}
+                className={`certificate-form__tab ${i === activeStudent ? 'certificate-form__tab--active' : ''}`}
+                onClick={() => onSetActiveStudent(i)}
+                title={s.studentName || `Estudiante ${i + 1}`}
+              >
+                <span className="certificate-form__tab-place">{PLACE_LABELS[s.place]}</span>
+                <span className="certificate-form__tab-name">
+                  {s.studentName ? s.studentName.split(' ')[0] : `Est. ${i + 1}`}
+                </span>
+                {students.length > 1 && (
+                  <FiX
+                    className="certificate-form__tab-remove"
+                    size={13}
+                    onClick={(e) => { e.stopPropagation(); onRemoveStudent(i) }}
+                  />
+                )}
+              </button>
+            ))}
+            {students.length < 3 && (
+              <button className="certificate-form__tab certificate-form__tab--add" onClick={onAddStudent} title="Agregar estudiante">
+                <FiPlus size={14} />
+              </button>
+            )}
+          </div>
+
+          <FormField
+            label="Nombre completo"
+            id={`studentName-${activeStudent}`}
+            value={student.studentName}
+            onChange={(v) => onStudentChange(activeStudent, 'studentName', v)}
+            placeholder="Apellidos y Nombres"
+            icon={FiUser}
+          />
+          <div className="certificate-form__row">
+            <FormField
+              label="Aprovechamiento"
+              id={`aprovechamiento-${activeStudent}`}
+              value={student.aprovechamiento}
+              onChange={(v) => onStudentChange(activeStudent, 'aprovechamiento', v)}
+              placeholder="Ej: 9,84 A+"
+              icon={FiStar}
+            />
+            {formData.certificateType === 'elemental' ? (
+              <FormField
+                label="Conducta"
+                id={`conducta-${activeStudent}`}
+                type="select"
+                value={student.conducta}
+                onChange={(v) => onStudentChange(activeStudent, 'conducta', v)}
+                options={CONDUCTA_OPTIONS}
+                icon={FiSmile}
+              />
+            ) : (
+              <FormField
+                label="Conducta"
+                id={`conducta-${activeStudent}`}
+                value={student.conducta}
+                onChange={(v) => onStudentChange(activeStudent, 'conducta', v)}
+                placeholder="Ej: EP"
+                icon={FiSmile}
+              />
+            )}
+          </div>
         </section>
 
         <section className="certificate-form__section">
@@ -149,7 +180,7 @@ function CertificateForm({ formData, onChange, onReset, onDownload }) {
       <div className="certificate-form__footer">
         <button className="certificate-form__download-btn" onClick={onDownload}>
           <FiDownload size={18} />
-          Descargar PDF
+          Descargar PDF {students.length > 1 ? `(${students.length})` : ''}
         </button>
       </div>
     </aside>
