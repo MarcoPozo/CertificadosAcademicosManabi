@@ -82,7 +82,12 @@
 .certificate-preview__divider {
   width: 80%;
   height: 2px;
-  background: linear-gradient(to right, transparent, var(--color-primary), transparent);
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--color-primary),
+    transparent
+  );
   margin: 5px auto 0;
 }
 
@@ -94,7 +99,7 @@
   color: var(--color-primary-dark);
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  margin-bottom: 0;
+  margin-bottom: 20px;
 }
 
 /* ---- Student name ---- */
@@ -108,12 +113,10 @@
 
 .certificate-preview__to {
   font-family: var(--font-name);
-  font-size: 1.7rem;
+  font-size: inherit;
+  font-weight: 700;
   font-style: italic;
   color: var(--color-primary-dark);
-  align-self: flex-start;
-  margin-left: 6px;
-  line-height: 1;
 }
 
 .certificate-preview__student-name {
@@ -124,6 +127,7 @@
   color: var(--color-primary-dark);
   text-align: center;
   line-height: 1.25;
+  white-space: nowrap;
 }
 
 .certificate-preview__name-line {
@@ -166,14 +170,16 @@
 }
 
 .certificate-preview__score-item {
-  font-family: var(--font-body);
-  font-size: 1.05rem;
-  color: var(--color-text);
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
   font-weight: 600;
+  color: var(--color-text);
+  letter-spacing: 0.02em;
 }
 
 .certificate-preview__score-item strong {
   color: var(--color-primary-dark);
+  font-weight: 700;
 }
 
 .certificate-preview__date {

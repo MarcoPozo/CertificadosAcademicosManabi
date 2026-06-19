@@ -1,4 +1,4 @@
-import { forwardRef } from 'react'
+import { forwardRef, useEffect, useRef } from 'react'
 import logoManabi from '../../assets/images/logo-manabi.png'
 import bgCertificate from '../../assets/images/bg-certificate.png'
 import currentYear from '../../assets/images/current-year.png'
@@ -23,6 +23,20 @@ const CertificatePreview = forwardRef(function CertificatePreview({ formData }, 
     subdirectoraName,
     docenteName,
   } = formData
+
+  const nameRef = useRef(null)
+
+  useEffect(() => {
+    const el = nameRef.current
+    if (!el) return
+    el.style.fontSize = ''
+    const maxWidth = el.parentElement.clientWidth
+    let fontSize = parseFloat(getComputedStyle(el).fontSize)
+    while (el.scrollWidth > maxWidth && fontSize > 12) {
+      fontSize -= 0.5
+      el.style.fontSize = `${fontSize}px`
+    }
+  }, [studentName])
 
   const gradeText =
     grade && parallel ? `${grade} año paralelo "${parallel}"` : grade || '___________'
@@ -51,8 +65,8 @@ const CertificatePreview = forwardRef(function CertificatePreview({ formData }, 
 
         {/* Student name */}
         <div className="certificate-preview__name-section">
-          <p className="certificate-preview__to">A:</p>
-          <p className="certificate-preview__student-name">
+          <p className="certificate-preview__student-name" ref={nameRef}>
+            <span className="certificate-preview__to">A: </span>
             {studentName || 'Nombre del Estudiante'}
           </p>
           <div className="certificate-preview__name-line" />
