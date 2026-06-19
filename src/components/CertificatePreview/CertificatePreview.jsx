@@ -12,6 +12,7 @@ const PLACE_LABEL = {
 
 const CertificatePreview = forwardRef(function CertificatePreview({ formData }, ref) {
   const {
+    certificateType,
     studentName,
     place,
     grade,
@@ -39,7 +40,9 @@ const CertificatePreview = forwardRef(function CertificatePreview({ formData }, 
   }, [studentName])
 
   const gradeText =
-    grade && parallel ? `${grade} año paralelo "${parallel}"` : grade || '___________'
+    certificateType === 'elemental'
+      ? (grade && parallel ? `${grade} año paralelo "${parallel}"` : grade || '___________')
+      : (grade && parallel ? `${grade} paralelo "${parallel}"` : grade || '___________')
   const placeText = PLACE_LABEL[place] || 'Primer Puesto'
 
   return (
@@ -74,7 +77,9 @@ const CertificatePreview = forwardRef(function CertificatePreview({ formData }, 
 
         {/* Body narrative */}
         <p className="certificate-preview__body-text">
-          Que le acredita el <strong>{placeText}</strong> del {gradeText} por haberse destacado en
+          Que le acredita el <strong>{placeText}</strong>{' '}
+          {certificateType === 'elemental' ? 'del' : 'de'}{' '}
+          <strong>{gradeText}</strong> por haberse destacado en
           su puntaje académico durante el año lectivo{' '}
           <strong>{schoolYear || '2025 - 2026'}</strong>.
         </p>

@@ -1,8 +1,9 @@
 import { useState } from 'react'
 
 const initialState = {
+  certificateType: 'elemental',
   studentName: '',
-  place: '1er',
+  place: 'Primer',
   grade: '',
   parallel: '',
   aprovechamiento: '',
@@ -21,7 +22,16 @@ export function useCertificateForm() {
   const [formData, setFormData] = useState(initialState)
 
   const handleChange = (field, value) => {
+    if (field === 'certificateType' && value !== formData.certificateType) {
+      setFormData({
+        ...initialState,
+        certificateType: value,
+        conducta: value === 'elemental' ? 'S' : '',
+      })
+      return true
+    }
     setFormData((prev) => ({ ...prev, [field]: value }))
+    return false
   }
 
   const reset = () => setFormData(initialState)

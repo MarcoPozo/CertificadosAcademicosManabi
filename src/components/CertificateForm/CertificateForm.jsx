@@ -8,6 +8,11 @@ const PLACE_OPTIONS = [
   { value: 'Tercer', label: '3er Lugar' },
 ]
 
+const TYPE_OPTIONS = [
+  { value: 'elemental', label: 'Elemental y Media' },
+  { value: 'inicial', label: 'Inicial y Preparatoria' },
+]
+
 const CONDUCTA_OPTIONS = [
   { value: 'S', label: 'S' },
   { value: 'F', label: 'F' },
@@ -29,6 +34,14 @@ function CertificateForm({ formData, onChange, onReset, onDownload }) {
         <section className="certificate-form__section">
           <h3 className="certificate-form__section-title">Estudiante</h3>
           <FormField
+            label="Tipo de certificado"
+            id="certificateType"
+            type="select"
+            value={formData.certificateType}
+            onChange={(v) => onChange('certificateType', v)}
+            options={TYPE_OPTIONS}
+          />
+          <FormField
             label="Nombre completo"
             id="studentName"
             value={formData.studentName}
@@ -44,22 +57,32 @@ function CertificateForm({ formData, onChange, onReset, onDownload }) {
               onChange={(v) => onChange('place', v)}
               options={PLACE_OPTIONS}
             />
-            <FormField
-              label="Conducta"
-              id="conducta"
-              type="select"
-              value={formData.conducta}
-              onChange={(v) => onChange('conducta', v)}
-              options={CONDUCTA_OPTIONS}
-            />
+            {formData.certificateType === 'elemental' ? (
+              <FormField
+                label="Conducta"
+                id="conducta"
+                type="select"
+                value={formData.conducta}
+                onChange={(v) => onChange('conducta', v)}
+                options={CONDUCTA_OPTIONS}
+              />
+            ) : (
+              <FormField
+                label="Conducta"
+                id="conducta"
+                value={formData.conducta}
+                onChange={(v) => onChange('conducta', v)}
+                placeholder="Ej: EP"
+              />
+            )}
           </div>
           <div className="certificate-form__row">
             <FormField
-              label="Grado / Año"
+              label={formData.certificateType === 'elemental' ? 'Grado / Año' : 'Nivel'}
               id="grade"
               value={formData.grade}
               onChange={(v) => onChange('grade', v)}
-              placeholder="Ej: Tercer"
+              placeholder={formData.certificateType === 'elemental' ? 'Ej: Tercer' : 'Ej: Inicial 1'}
             />
             <FormField
               label="Paralelo"
